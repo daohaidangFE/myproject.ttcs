@@ -14,5 +14,8 @@ public class HomeController {
         return "/dashboard/index";
     }
 
+    @GetMapping("/login")
+    public String login(Model model) {return "/public/home";}
+
 }
 
