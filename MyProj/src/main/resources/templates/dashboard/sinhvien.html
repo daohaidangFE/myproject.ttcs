@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý điểm thi admin</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Tailwind -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+        .font-family-karla { font-family: sans-serif }
+        .bg-sidebar { background: #3d68ff; }
+        .cta-btn { color: #3d68ff; }
+        .upgrade-btn { background: #1947ee; }
+        .upgrade-btn:hover { background: #0038fd; }
+        .active-nav-link { background: #1947ee; }
+        .nav-item:hover { background: #1947ee; }
+        .account-link:hover { background: #3d68ff; }
+    </style>
+</head>
+<body class="bg-gray-100 font-family-karla flex">
+
+<aside id="aside1" class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <div class="p-6">
+        <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+    </div>
+    <nav class="text-white text-base font-semibold pt-3">
+        <a href="/" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Trang chủ
+        </a>
+        <a href="sinhvien" class="active-nav-link flex items-center text-white py-4 pl-6 nav-item">
+            <i class="fa fa-user-graduate mr-3 fa-inverse"></i>
+            Sinh Viên
+        </a>
+        <a href="giangvien" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fa fa-clipboard fa-inverse mr-3"></i>
+            Giảng Viên
+        </a>
+        <a href="ttmonhoc" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fa fa-table fa-inverse mr-3"></i>
+            Thông tin môn học
+        </a>
+        <a href="khoachuyenmon" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fa fa-book fa-inverse mr-3"></i>
+            Khoa chuyên môn
+        </a>
+    </nav>
+</aside>
+<div id="aside2" class="relative w-full flex flex-col h-screen overflow-y-hidden">
+    <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+        <div class="w-1/2"></div>
+        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+            <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
+                <img src="https://code.ptit.edu.vn/2020/images/logo_ptit.png">
+            </button>
+            <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
+            <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
+                <a href="/public/home.html" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Header & Nav -->
+    <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+        <div class="flex items-center justify-between">
+            <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+            <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+                <i x-show="!isOpen" class="fas fa-bars"></i>
+                <i x-show="isOpen" class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Dropdown Nav -->
+        <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+            <a href="/" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                Trang chủ
+            </a>
+            <a href="sinhvien" class="active-nav-link flex items-center text-white py-4 pl-6 nav-item">
+                <i class="fa fa-user-graduate mr-3 fa-inverse"></i>
+                Sinh Viên
+            </a>
+            <a href="giangvien" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+                <i class="fa fa-clipboard fa-inverse mr-3"></i>
+                Giảng Viên
+            </a>
+            <a href="ttmonhoc" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+                <i class="fa fa-table fa-inverse mr-3"></i>
+                Thông tin môn học
+            </a>
+            <a href="khoachuyenmon" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+                <i class="fa fa-book fa-inverse mr-3"></i>
+                Khoa chuyên môn
+            </a>
+        </nav>
+
+    </header>
+    <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
+        <main class="w-full flex-grow p-6">
+            <h1 class="text-3xl text-black pb-6">Sinh viên</h1>
+            <div class="w-full mt-12">
+                <form id="searchForm" action="sinhvien" method="get">
+                    <div class="flex mb-4">
+                        <div class="mr-4 flex-grow">
+                            <input name="masv" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Mã sinh viên">
+                        </div>
+                        <div class="mr-4 flex-grow">
+                            <input name="tensv" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Tên sinh viên">
+                        </div>
+                        <div class="mr-4 flex-grow">
+                            <select name="gioi_tinh" class="block w-full px-3 py-2.5 text-gray-700 border rounded-lg focus:outline-none ">
+                                <option value="">Tất cả</option>
+                                <option value="nam">Nam</option>
+                                <option value="nu">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="mr-4 flex-grow">
+                            <input name="username" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Tên tài khoản">
+                        </div>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                </form>
+                <p class="text-xl pb-3 flex items-center">
+                    <i class="fas fa-list mr-3"></i> Danh sách sinh viên
+                </p>
+                <div class="bg-white overflow-auto">
+                    <table class="text-left w-full border-collapse"> <!-- Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+                        <thead>
+                        <tr>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Mã sinh viên</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên sinh viên</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên tài khoản</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">GPA</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Giới tính</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Email</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="sinhVien : ${sinhVienDTOList}" class="hover:bg-grey-lighter">
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getMaSV()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getTenSV()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getUsername()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getDiem()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getGioiTinh()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getEmail()}"></td>
+                            <td class="py-4 px-6 border-b border-gray-200">
+                                <a href="#" class="text-blue-500 hover:text-blue-700 mr-2" onclick="editStudent(this)" th:attr="data-maSV=${sinhVien.maSV}">Sửa</a>
+                                <a href="#" class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button onclick="toggleAddForm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Thêm</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!--form thêm-->
+<div id="addStudentForm" class="w-full md:w-1/2 lg:w-1/3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute bg-white shadow-lg rounded-lg p-6" style="display: none;">
+    <form>
+        <div class="mb-4">
+            <label for="masv" class="block text-gray-700 text-sm font-bold mb-2">Mã sinh viên:</label>
+            <input id="masv" type="text" name="masv" placeholder="Mã sinh viên" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="tensv" class="block text-gray-700 text-sm font-bold mb-2">Tên sinh viên:</label>
+            <input id="tensv" type="text" name="tensv" placeholder="Tên sinh viên" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="gioi_tinh" class="block text-gray-700 text-sm font-bold mb-2">Giới tính:</label>
+            <input id="gioi_tinh" type="text" name="gioiTinh" placeholder="Giới tính" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Tài khoản:</label>
+            <input id="username" type="text" name="username" placeholder="Tài khoản" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+            <input id="email" name="email" type="email" name="email" placeholder="Email" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <button id="saveButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Lưu</button>
+        <button type="button" onclick="closeForm()"  class="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </form>
+</div>
+
+<!-- AlpineJS -->
+
+
+<script>
+    //sửa sv
+    var isEditing = false;
+    function editStudent(element) {
+        var maSV = element.getAttribute('data-maSV');
+        console.log('Mã sinh viên: ', maSV);
+
+        isEditing = true
+        fetch('/api/sinhvien/' + maSV)
+            .then(response => response.json())
+            .then(data => {
+
+                var masv = data.maSV;
+                var tensv = data.tenSV;
+                var gioiTinh = data.gioiTinh;
+                var username = data.username;
+                var email = data.email;
+
+                document.getElementById("masv").value = masv;
+                document.getElementById("tensv").value = tensv;
+                document.getElementById("gioi_tinh").value = gioiTinh;
+                document.getElementById("username").value = username;
+                document.getElementById("email").value = email;
+
+                document.getElementById("masv").readOnly = true;
+                document.getElementById("username").readOnly = true;
+
+                toggleAddForm();
+            })
+            .catch(error => console.error('Có lỗi xảy ra:', error));
+    }
+
+
+    $("#saveButton").click(function (e) {
+        e.preventDefault()
+        if(isEditing){
+            var maSV = $("#masv").val();
+            var tenSV = $("#tensv").val();
+            var gioiTinh = $("#gioi_tinh").val();
+            var username = $("#username").val();
+            var email = $("#email").val();
+
+            var sinhVien = {
+                "maSV": maSV,
+                "tenSV": tenSV,
+                "gioiTinh": gioiTinh,
+                "username": username,
+                "email": email
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/api/sinhvien/" + maSV,
+                data: JSON.stringify(sinhVien),
+                success: function (result) {
+                    if (result === "success") {
+                        alert("Cập nhật thành công!");
+                        window.location.href = "sinhvien";
+                    } else {
+                        alert("Đã có lỗi xảy ra!");
+                        window.location.href = "sinhvien";
+                    }
+                },
+                error: function () {
+                    alert("Đã có lỗi xảy ra!");
+                    window.location.href = "sinhvien";
+                }
+            });
+        }
+        else{
+            addSinhVien();
+        }
+    })
+
+    //thêm sinhvien
+    function addSinhVien() {
+        var masv = document.getElementById("masv").value;
+        var tensv = document.getElementById("tensv").value;
+        var username = document.getElementById("username").value;
+        var gioi_tinh = document.getElementById("gioi_tinh").value;
+        var email = document.getElementById("email").value;
+
+        var sinhVien = {
+            maSV: masv,
+            tenSV: tensv,
+            username: username,
+            gioiTinh: gioi_tinh,
+            password: username,
+            email: email
+        };
+
+        fetch('/api/sinhvien', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(sinhVien),
+        })
+            .then(response => response.json())
+            .then(sinhVien => {
+                alert("Thêm thành công!");
+                window.location.href = "sinhvien";
+            })
+            .catch((error) => {
+                console.error('Có lỗi xảy ra:', error);
+                alert("Đã có lỗi xảy ra!");
+                window.location.href = "sinhvien";
+            });
+    }
+
+    //xoá
+    function confirmDelete(button) {
+        var row = button.closest("tr");
+        var maSV = row.querySelector("td:nth-child(1)").innerText;
+        if (confirm("Bạn có chắc chắn muốn xóa sinh viên này không?")) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "/api/sinhvien/" + maSV, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert("Xóa sinh viên thành công!");
+                        window.location.href = "sinhvien";
+                    } else {
+                        alert("Đã xảy ra lỗi!");
+                        window.location.href = "sinhvien";
+                    }
+                }
+            };
+            xhr.send();
+        } else {
+            window.location.href = "sinhvien";
+            console.log("Hủy bỏ xóa sinh viên với mã: " + maSV);
+        }
+    }
+
+    // hiển thị form
+    function closeForm() {
+        var addStudentForm = document.getElementById("addStudentForm");
+        addStudentForm.style.display = "none";
+        window.location.href = "sinhvien";
+    }
+
+    function toggleAddForm() {
+        var addForm = document.getElementById("addStudentForm");
+        var opact1 = document.getElementById("aside1");
+        var opact2 = document.getElementById("aside2");
+        if (addForm.style.display === "none") {
+            addForm.style.display = "block";
+            opact1.style.opacity = 0.25;
+            opact2.style.opacity = 0.25;
+        } else {
+            addForm.style.display = "none";
+            opact1.style.opacity = 1;
+            opact2.style.opacity = 1;
+            opact2.style.backgroundColor = "none";
+            window.location.href = "sinhvien";
+        }
+    }
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+<!-- Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+</body>
+</html>
