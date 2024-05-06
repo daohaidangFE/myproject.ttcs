@@ -4,7 +4,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
@@ -15,7 +14,9 @@ public class HomeController {
     }
 
     @GetMapping("/login")
-    public String login(Model model) {return "/public/home";}
+    public String login(Model model) {return "/public/login";}
 
+    @GetMapping("/forgotpassword")
+    public String forgotpassword(Model model) {return "/public/forgotpassword";}
 }
 
