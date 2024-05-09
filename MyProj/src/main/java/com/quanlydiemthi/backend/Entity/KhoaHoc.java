@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
+@ToString(exclude = {"lop"})
 public class KhoaHoc {
     @Id
     private Integer maKH;

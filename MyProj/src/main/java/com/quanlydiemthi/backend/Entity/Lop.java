@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
+@ToString(exclude = {"sinhvien", "khoahoc", "khoa", "giangVien"})
 public class Lop {
     @Id
     private String maLop;
@@ -25,7 +25,6 @@ public class Lop {
     @OneToMany(mappedBy = "lop",fetch = FetchType.LAZY)
     private List<SinhVien> sinhvien;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "maKH")
     private KhoaHoc khoahoc;
@@ -35,7 +34,6 @@ public class Lop {
     @JoinColumn(name = "maK")
     private Khoa khoa;
 
-    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "maGV")
     private GiangVien giangVien;

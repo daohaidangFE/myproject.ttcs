@@ -8,12 +8,14 @@ import com.quanlydiemthi.backend.Service.ISinhVienService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class SinhVienServiceImpl implements ISinhVienService {
     @Autowired
     private SinhVienRepository sinhvienRepository;
@@ -39,7 +41,7 @@ public class SinhVienServiceImpl implements ISinhVienService {
     @Override
     public SinhVienDTO createStudent(SinhVienDTO sinhVienDTO) {
         SinhVien sinhVien = new SinhVien();
-        sinhVien.setMaSV(sinhVienDTO.getMaSV().replaceAll("\s\s+", " ").trim());
+        sinhVien.setMaSV(sinhVienDTO.getMaSV().replaceAll("\s\s+", "").trim());
         sinhVien.setActive(true);
         sinhVien.setTenSV(sinhVienDTO.getTenSV().replaceAll("\s\s+", " ").trim());
         sinhVien.setGioiTinh(sinhVienDTO.getGioiTinh().replaceAll("\s\s+", " ").trim());
@@ -54,6 +56,7 @@ public class SinhVienServiceImpl implements ISinhVienService {
     public SinhVien findStudent(String maSV) {
         return sinhvienRepository.findByMaSV(maSV);
     }
+
     @Override
     public void updateStudent(SinhVienDTO sinhVienDTO) {
         SinhVien sinhVien = sinhvienRepository.findByMaSV(sinhVienDTO.getMaSV());
@@ -63,5 +66,10 @@ public class SinhVienServiceImpl implements ISinhVienService {
         sinhVien.setEmail(sinhVienDTO.getEmail().replaceAll("\s\s+", " ").trim());
         sinhvienRepository.save(sinhVien);
         this.modelMapper.map(sinhVien, SinhVienDTO.class);
+    }
+
+    @Override
+    public SinhVien findByUsername(String userName) {
+        return sinhvienRepository.findByMaSV(userName);
     }
 }

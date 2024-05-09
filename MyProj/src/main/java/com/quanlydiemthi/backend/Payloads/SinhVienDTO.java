@@ -1,5 +1,6 @@
 package com.quanlydiemthi.backend.Payloads;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quanlydiemthi.backend.Entity.Diem;
 import com.quanlydiemthi.backend.Entity.Lop;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = {"diem", "lop"})
 public class SinhVienDTO {
 
     private String maSV;
@@ -35,15 +37,5 @@ public class SinhVienDTO {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Role role;
 
-    private List<Diem> diem;
-
     private Lop lop;
-
-    public String isActive() {
-        if(isActive) {
-            return "active";
-        } else {
-            return "inactive";
-        }
-    }
 }

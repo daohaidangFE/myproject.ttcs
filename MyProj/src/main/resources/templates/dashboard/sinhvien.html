@@ -24,10 +24,10 @@
 
 <aside id="aside1" class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
-        <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+        <a href="/admin" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
-        <a href="/" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
+        <a href="/admin" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
             <i class="fas fa-tachometer-alt mr-3"></i>
             Trang chủ
         </a>
@@ -60,7 +60,7 @@
             <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
-                <a href="/public/home" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+                <a href="/" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
             </div>
         </div>
     </header>
@@ -68,7 +68,7 @@
     <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
-            <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+            <a href="/admin" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
             <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
                 <i x-show="!isOpen" class="fas fa-bars"></i>
                 <i x-show="isOpen" class="fas fa-times"></i>
@@ -77,7 +77,7 @@
 
         <!-- Dropdown Nav -->
         <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-            <a href="/" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
+            <a href="/admin" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
                 <i class="fas fa-tachometer-alt mr-3"></i>
                 Trang chủ
             </a>
@@ -103,7 +103,7 @@
     <div class="w-full h-screen overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
             <h1 class="text-3xl text-black pb-6">Sinh viên</h1>
-            <div class="w-full mt-12">
+            <div class="w-full mt-6">
                 <form id="searchForm" action="sinhvien" method="get">
                     <div class="flex mb-4">
                         <div class="mr-4 flex-grow">
@@ -137,7 +137,7 @@
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Mã sinh viên</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên sinh viên</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên tài khoản</th>
-                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">GPA</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Lớp chính quy</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Giới tính</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Email</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Thao tác</th>
@@ -148,12 +148,12 @@
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getMaSV()}"></td>
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getTenSV()}"></td>
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getUsername()}"></td>
-                            <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getDiem()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getLop().getTenLop()}"></td>
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getGioiTinh()}"></td>
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getEmail()}"></td>
                             <td class="py-4 px-6 border-b border-gray-200">
-                                <a href="#" class="text-blue-500 hover:text-blue-700 mr-2" onclick="editStudent(this)" th:attr="data-maSV=${sinhVien.maSV}">Sửa</a>
-                                <a href="#" class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</a>
+                                    <button class="text-blue-500 hover:text-blue-700 mr-2" onclick="editStudent(this)" th:attr="data-maSV=${sinhVien.maSV}">Sửa</button>
+                                    <button class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</button>
                             </td>
                         </tr>
                         </tbody>
@@ -203,13 +203,25 @@
 
 
 <script>
+    function validateForm() {
+        var masv = document.getElementById('masv').value;
+        var tensv = document.getElementById('tensv').value;
+        var gioiTinh = document.getElementById('gioi_tinh').value;
+        var username = document.getElementById('username').value;
+        var email = document.getElementById('email').value;
+
+        if (masv == '' || tensv == '' || gioiTinh == '' || username == '' || email == '') {
+            alert('Vui lòng điền đầy đủ thông tin vào các trường.');
+            return false;
+        }
+        return true;
+    }
     //sửa sv
     var isEditing = false;
     function editStudent(element) {
         var maSV = element.getAttribute('data-maSV');
-        console.log('Mã sinh viên: ', maSV);
 
-        isEditing = true
+        isEditing = true;
         fetch('/api/sinhvien/' + maSV)
             .then(response => response.json())
             .then(data => {
@@ -231,6 +243,7 @@
 
                 toggleAddForm();
             })
+
             .catch(error => console.error('Có lỗi xảy ra:', error));
     }
 
@@ -259,7 +272,6 @@
                 data: JSON.stringify(sinhVien),
                 success: function (result) {
                     if (result === "success") {
-                        alert("Cập nhật thành công!");
                         window.location.href = "sinhvien";
                     } else {
                         alert("Đã có lỗi xảy ra!");
@@ -303,12 +315,10 @@
         })
             .then(response => response.json())
             .then(sinhVien => {
-                alert("Thêm thành công!");
                 window.location.href = "sinhvien";
             })
             .catch((error) => {
                 console.error('Có lỗi xảy ra:', error);
-                alert("Đã có lỗi xảy ra!");
                 window.location.href = "sinhvien";
             });
     }

@@ -12,4 +12,5 @@ public interface IGiangVienService {
     GiangVienDTO createTeacher(GiangVienDTO giangVienDTO);
     void updateTeacher(GiangVienDTO giangVienDTO);
     GiangVien findTeacher(String maGV);
+    GiangVien findByUserName(String userName);
 }

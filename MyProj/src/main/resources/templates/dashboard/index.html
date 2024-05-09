@@ -23,18 +23,18 @@
 
 <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
-        <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+        <a href="admin" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
-        <a href="/" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+        <a href="admin" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
             <i class="fas fa-tachometer-alt mr-3"></i>
             Trang chủ
         </a>
-        <a href="/admin/sinhvien" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+        <a href="admin/sinhvien" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
             <i class="fa fa-user-graduate mr-3 fa-inverse"></i>
             Sinh Viên
         </a>
-        <a href="/admin/giangvien" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+        <a href="admin/giangvien" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
             <i class="fa fa-clipboard fa-inverse mr-3"></i>
             Giảng Viên
         </a>
@@ -61,7 +61,7 @@
             <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
-                <a href="/public/home.html" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+                <a href="/" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
             </div>
         </div>
     </header>
@@ -69,7 +69,7 @@
     <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
-            <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+            <a href="admin" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
             <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
                 <i x-show="!isOpen" class="fas fa-bars"></i>
                 <i x-show="isOpen" class="fas fa-times"></i>
@@ -78,7 +78,7 @@
 
         <!-- Dropdown Nav -->
         <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-            <a href="/" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+            <a href="admin" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
                 <i class="fas fa-tachometer-alt mr-3"></i>
                 Trang chủ
             </a>
@@ -146,7 +146,7 @@
                             </div>
                             <div class="flex-1 text-right md:text-center">
                                 <h2 class="font-bold uppercase text-white mb-10">Người dùng</h2>
-                                <p class="font-bold bg-"><a href="admin/nguoidung"><span class="text-white">Xem thêm <i class="fa fa-arrow-right fa-1x fa-inverse"></i></span></a></p>
+                                <p class="font-bold bg-"><a href="#"><span class="text-white">Xem thêm <i class="fa fa-arrow-right fa-1x fa-inverse"></i></span></a></p>
                             </div>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                             </div>
                             <div class="flex-1 text-right md:text-center">
                                 <h2 class="font-bold uppercase text-white mb-10">Thông tin chung</h2>
-                                <p class="font-bold bg-"><a href="admin/thongtinchung"><span class="text-white">Xem thêm <i class="fa fa-arrow-right fa-1x fa-inverse"></i></span></a></p>
+                                <p class="font-bold bg-"><a href="#"><span class="text-white">Xem thêm <i class="fa fa-arrow-right fa-1x fa-inverse"></i></span></a></p>
                             </div>
                         </div>
                     </div>

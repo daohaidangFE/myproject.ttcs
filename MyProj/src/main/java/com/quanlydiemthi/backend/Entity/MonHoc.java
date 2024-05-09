@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+
 public class MonHoc {
     @Id
     private String maMH;

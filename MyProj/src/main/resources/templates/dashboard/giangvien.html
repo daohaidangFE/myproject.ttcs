@@ -25,10 +25,10 @@
 
 <aside id="aside1" class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
-        <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+        <a href="/admin" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
-        <a href="/" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
+        <a href="/admin" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
             <i class="fas fa-tachometer-alt mr-3"></i>
             Trang chủ
         </a>
@@ -63,7 +63,7 @@
             <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
-                <a href="/public/home.html" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+                <a href="/" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
             </div>
         </div>
     </header>
@@ -71,7 +71,7 @@
     <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
-            <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+            <a href="/admin" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
             <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
                 <i x-show="!isOpen" class="fas fa-bars"></i>
                 <i x-show="isOpen" class="fas fa-times"></i>
@@ -80,7 +80,7 @@
 
         <!-- Dropdown Nav -->
         <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-            <a href="/" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
+            <a href="/admin" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
                 <i class="fas fa-tachometer-alt mr-3"></i>
                 Trang chủ
             </a>
@@ -144,7 +144,7 @@
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Giới tính</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên tài khoản</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Email</th>
-                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Thao tác</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light" th:if="${giangVienlog.getRole().getRole() == 'admin'}">Thao tác</th>
 
                         </tr>
                         </thead>
@@ -157,13 +157,17 @@
                                 <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getUsername()}"></td>
                                 <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getEmail()}"></td>
                                 <td class="py-4 px-6 border-b border-grey-light">
-                                    <a href="#" class="text-blue-500 hover:text-blue-700 mr-2" onclick="editTeacher(this)" th:attr="data-maGV=${giangVien.maGV}">Sửa</a>
-                                    <a href="#" class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</a>
+                                    <div th:if="${giangVienlog.getRole().getRole() == 'admin'}">
+                                        <!-- Hiển thị nút Sửa -->
+                                        <a href="#" class="text-blue-500 hover:text-blue-700 mr-2" onclick="editTeacher(this)" th:attr="data-maGV=${giangVien.maGV}">Sửa</a>
+                                        <!-- Hiển thị nút Xóa -->
+                                        <a href="#" class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</a>
+                                    </div>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4 flex justify-end">
+                <div class="mt-4 flex justify-end" th:if="${giangVienlog.getRole().getRole() == 'admin'}">
                     <button onclick="toggleAddForm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Thêm</button>
                 </div>
             </div>
@@ -362,6 +366,9 @@
         }
     }
 
+
+    //phân trang
+    //???
 </script>
 
 

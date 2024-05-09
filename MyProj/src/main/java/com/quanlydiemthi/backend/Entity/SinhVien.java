@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-
+@ToString(exclude = {"diem", "lop"})
 public class SinhVien {
     @Id
     private String maSV;
@@ -40,7 +40,6 @@ public class SinhVien {
     @OneToMany(mappedBy = "sinhvien",fetch = FetchType.LAZY)
     private List<Diem> diem;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "maLop")
     private Lop lop;

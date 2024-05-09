@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
+@ToString(exclude = {"role", "lop"})
 public class GiangVien {
     @Id
     private String maGV;
@@ -38,6 +38,7 @@ public class GiangVien {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "giangVien")
     private Lop lop;
 }

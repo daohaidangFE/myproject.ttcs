@@ -9,11 +9,9 @@ import lombok.*;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+
 @Data
+@ToString(exclude = "lop")
 public class KhoaDTO {
 
     private Integer maK;
@@ -21,4 +19,5 @@ public class KhoaDTO {
     private String tenK;
 
     private List<Lop> lop;
+    private String dsLop;
 }

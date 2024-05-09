@@ -13,6 +13,19 @@ public class SinhVienRepositoryImpl implements SinhVienRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private void joinTable(Map<String, String> conditions, StringBuilder sql) {
+        String maGV = conditions.get("maGV");
+        if(maGV != null && !maGV.isEmpty()) {
+            sql.append(" JOIN lop l ON sv.ma_lop = l.ma_lop ");
+            sql.append(" JOIN giang_vien gv ON l.maGV = gv.maGV ");
+        }
+    }
+    public static void querySpecial(StringBuilder sql, Map<String, String> conditions) {
+        String maGV = conditions.get("maGV");
+        if (maGV != null && !maGV.isEmpty()) {
+            sql.append("AND gv.maGV" + " = '" + maGV + "' ");
+        }
+    }
     public static void queryNormal(StringBuilder sql, Map<String, String> conditions) {
         try {
             for (Map.Entry<String, String> entry : conditions.entrySet()) {
@@ -31,8 +44,10 @@ public class SinhVienRepositoryImpl implements SinhVienRepositoryCustom {
     @Override
     public List<SinhVien> findStudents(Map<String, String> conditions) {
         StringBuilder sql = new StringBuilder("SELECT sv.* FROM sinh_vien sv ");
+        joinTable(conditions, sql);
         sql.append("WHERE 1 = 1 AND sv.is_active = 1 ");
         queryNormal(sql, conditions);
+        querySpecial(sql, conditions);
         sql.append(" GROUP BY sv.masv");
         Query query = entityManager.createNativeQuery(sql.toString(), SinhVien.class);
         return query.getResultList();

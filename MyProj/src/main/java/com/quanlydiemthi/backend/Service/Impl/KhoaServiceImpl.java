@@ -8,12 +8,14 @@ import com.quanlydiemthi.backend.Service.IKhoaService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class KhoaServiceImpl implements IKhoaService {
     @Autowired
     private KhoaRepository khoaRepository;
@@ -25,7 +27,21 @@ public class KhoaServiceImpl implements IKhoaService {
     public List<KhoaDTO> findAll() {
         List<Khoa> khoaList = khoaRepository.findAll();
         return khoaList.stream()
-                .map((khoa) -> this.modelMapper.map(khoa, KhoaDTO.class))
+                .map((khoa) ->{
+                    KhoaDTO khoaDTO = modelMapper.map(khoa, KhoaDTO.class);
+                    String str = "";
+                    for (int i = 0;i < khoaDTO.getLop().size() ;i++){
+                        str = str + khoaDTO.getLop().get(i).getTenLop();
+                        if(i < khoaDTO.getLop().size() - 1){
+                            str = str + ", ";
+                        }
+                    }
+                    if(str == null || str.equals("")) {
+                        str ="Chưa có lớp";
+                    }
+                    khoaDTO.setDsLop(str);
+                    return khoaDTO;
+                })
                 .collect(Collectors.toList());
     }
 

@@ -23,18 +23,18 @@
 
 <aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
-        <a href="indexgv.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+        <a href="homeGV" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
     </div>
     <nav class="text-white text-base font-semibold pt-3">
-        <a href="indexgv.html" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+        <a href="homeGV" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
             <i class="fas fa-tachometer-alt mr-3"></i>
             Trang chủ
         </a>
-        <a href="lop.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+        <a href="lop" class="active-nav-link flex items-center text-white py-4 pl-6 nav-item">
             <i class="fa fa-user-graduate mr-3 fa-inverse"></i>
             Lớp
         </a>
-        <a href="ttcanhan.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+        <a href="ttcanhanGV" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
             <i class="fa fa-info fa-inverse mr-3"></i>
             Thông tin cá nhân
         </a>
@@ -53,7 +53,8 @@
             <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
-                <a href="/public/home.html" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+                <a href="/admin" class="block px-4 py-2 account-link hover:text-white">Trang ADMIN</a>
+                <a href="/" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
             </div>
         </div>
     </header>
@@ -61,7 +62,7 @@
     <!-- Mobile Header & Nav -->
     <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
         <div class="flex items-center justify-between">
-            <a href="indexgv.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+            <a href="homeGV" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
             <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
                 <i x-show="!isOpen" class="fas fa-bars"></i>
                 <i x-show="isOpen" class="fas fa-times"></i>
@@ -70,15 +71,15 @@
 
         <!-- Dropdown Nav -->
         <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-            <a href="indexgv.html" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+            <a href="homeGV" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
                 <i class="fas fa-tachometer-alt mr-3"></i>
                 Trang chủ
             </a>
-            <a href="lop.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <a href="lop" class="active-nav-link flex items-center text-white py-4 pl-6 nav-item">
                 <i class="fa fa-info fa-inverse mr-3"></i>
                 Lớp
             </a>
-            <a href="ttcanhan.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <a href="ttcanhanGV" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
                 <i class="fa fa-table fa-inverse mr-3"></i>
                 Thông tin cá nhân
             </a>
@@ -89,80 +90,54 @@
     <div class="w-full overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
             <h1 class="text-3xl text-black pb-6">Xin chào!</h1>
-
             <div class="w-full mt-12">
-                <p class="text-xl pb-3 flex items-center">
-                    <i class="fas fa-list mr-3"></i> Danh sách lớp
-                </p>
+<!--                <form id="searchForm" action="lop/sinhvien" method="get">-->
+<!--                    <div class="flex mb-4">-->
+<!--                        <div class="mr-4 flex-grow">-->
+<!--                            <input name="masv" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Mã sinh viên">-->
+<!--                        </div>-->
+<!--                        <div class="mr-4 flex-grow">-->
+<!--                            <input name="tensv" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Tên sinh viên">-->
+<!--                        </div>-->
+<!--                        <div class="mr-4 flex-grow">-->
+<!--                            <select name="gioi_tinh" class="block w-full px-3 py-2.5 text-gray-700 border rounded-lg focus:outline-none ">-->
+<!--                                <option value="">Tất cả</option>-->
+<!--                                <option value="nam">Nam</option>-->
+<!--                                <option value="nu">Nữ</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="mr-4 flex-grow">-->
+<!--                            <input name="username" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Tên tài khoản">-->
+<!--                        </div>-->
+<!--                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">-->
+<!--                            Tìm kiếm-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </form>-->
+                <div class="text-xl pb-3 flex items-center">
+                    <i class="fas fa-list mr-3"></i><h2 class="text-xl text-black" th:text="${giangVienlog.getLop().getTenLop()}" ></h2>
+                </div>
                 <div class="bg-white overflow-auto">
                     <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
                         <thead>
                         <tr>
-                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Mã lớp</th>
-                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên lớp</th>
-                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Mã khoa</th>
-                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên khoa</th>
-                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Xem chi tiết</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Mã sinh viên</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên sinh viên</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tài khoản</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Giới tính</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Email</th>
 
                         </tr>
                         </thead>
                         <tbody>
                         <!-- Dòng 1 -->
-                        <tr class="hover:bg-gray-200">
-                            <td class="py-4 px-6 border-b border-gray-200">L001</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Lớp A</td>
-                            <td class="py-4 px-6 border-b border-gray-200">1</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Công nghệ thông tin 1</td>
-                            <td class="py-4 px-6 border-b border-gray-200"><a href="#" class="hover:underline">Chi tiết</a></td>
-                        </tr>
-                        <!-- Dòng 2 -->
-                        <tr class="hover:bg-gray-200">
-                            <td class="py-4 px-6 border-b border-gray-200">L002</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Lớp B</td>
-                            <td class="py-4 px-6 border-b border-gray-200">1</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Công nghệ thông tin 1</td>
-                            <td class="py-4 px-6 border-b border-gray-200"><a href="#" class="hover:underline">Chi tiết</a></td>
-                        </tr>
-                        <!-- Dòng 3 -->
-                        <tr class="hover:bg-gray-200">
-                            <td class="py-4 px-6 border-b border-gray-200">L003</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Lớp C</td>
-                            <td class="py-4 px-6 border-b border-gray-200">1</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Công nghệ thông tin 1</td>
-                            <td class="py-4 px-6 border-b border-gray-200"><a href="#" class="hover:underline">Chi tiết</a></td>
-                        </tr>
-                        <!-- Dòng 4 -->
-                        <tr class="hover:bg-gray-200">
-                            <td class="py-4 px-6 border-b border-gray-200">L004</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Lớp D</td>
-                            <td class="py-4 px-6 border-b border-gray-200">1</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Công nghệ thông tin 1</td>
-                            <td class="py-4 px-6 border-b border-gray-200"><a href="#" class="hover:underline">Chi tiết</a></td>
-                        </tr>
-                        <!-- Dòng 5 -->
-                        <tr class="hover:bg-gray-200">
-                            <td class="py-4 px-6 border-b border-gray-200">L005</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Lớp E</td>
-                            <td class="py-4 px-6 border-b border-gray-200">1</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Công nghệ thông tin 1</td>
-                            <td class="py-4 px-6 border-b border-gray-200"><a href="#" class="hover:underline">Chi tiết</a></td>
-                        </tr>
-                        <!-- Dòng 6 -->
-                        <tr class="hover:bg-gray-200">
-                            <td class="py-4 px-6 border-b border-gray-200">L006</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Lớp F</td>
-                            <td class="py-4 px-6 border-b border-gray-200">1</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Công nghệ thông tin 1</td>
-                            <td class="py-4 px-6 border-b border-gray-200"><a href="#" class="hover:underline">Chi tiết</a></td>
-                        </tr>
-                        <!-- Dòng 7 -->
-                        <tr class="hover:bg-gray-200">
-                            <td class="py-4 px-6 border-b border-gray-200">L007</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Lớp G</td>
-                            <td class="py-4 px-6 border-b border-gray-200">1</td>
-                            <td class="py-4 px-6 border-b border-gray-200">Công nghệ thông tin 1</td>
-                            <td class="py-4 px-6 border-b border-gray-200"><a href="#" class="hover:underline">Chi tiết</a></td>
-                        </tr>
+                            <tr class="hover:bg-gray-200"  th:each="sinhvien : ${sinhVienList}">
+                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getMaSV()}"></td>
+                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getTenSV()}"></td>
+                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getUsername()}"></td>
+                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getGioiTinh()}"></td>
+                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getEmail()}"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

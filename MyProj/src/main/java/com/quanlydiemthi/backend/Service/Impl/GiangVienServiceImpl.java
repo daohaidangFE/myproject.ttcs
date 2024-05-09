@@ -9,12 +9,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class GiangVienServiceImpl implements IGiangVienService {
     @Autowired
     private GiangVienRepository giangVienRepository;
@@ -54,6 +56,11 @@ public class GiangVienServiceImpl implements IGiangVienService {
     @Override
     public GiangVien findTeacher(String maGV) {
         return giangVienRepository.findByMaGV(maGV);
+    }
+
+    @Override
+    public GiangVien findByUserName(String userName) {
+        return giangVienRepository.findByMaGV(userName);
     }
 
     @Override

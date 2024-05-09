@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface IMonHocService {
     List<MonHocDTO> findAll();
-    MonHocDTO findMonHocById(Integer Id);
     List<MonHocDTO> searchMonHocByTenMH(String tenMH);
+    MonHocDTO createMonHoc(MonHocDTO monHocDTO);
+    MonHocDTO updateMonHoc(MonHocDTO monHocDTO);
+    MonHoc findMonHoc(String maMH);
 }

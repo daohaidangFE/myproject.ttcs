@@ -13,4 +13,5 @@ public interface ISinhVienService {
     SinhVienDTO createStudent(SinhVienDTO studentDTO);
     SinhVien findStudent(String maSV);
     void updateStudent(SinhVienDTO sinhVienDTO);
+    SinhVien findByUsername(String userName);
 }

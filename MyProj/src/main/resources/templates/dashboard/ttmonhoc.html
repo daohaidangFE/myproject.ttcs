@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quản lý điểm thi admin</title>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <!-- Tailwind -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
@@ -22,12 +23,12 @@
 </head>
 <body class="bg-gray-100 font-family-karla flex">
 
-<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+<aside id="aside1" class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
   <div class="p-6">
-    <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+    <a href="/admin" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
   </div>
   <nav class="text-white text-base font-semibold pt-3">
-    <a href="/" class="flex items-center text-white py-4 pl-6 nav-itemopacity-75 hover:opacity-100 ">
+    <a href="/admin" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
       <i class="fas fa-tachometer-alt mr-3"></i>
       Trang chủ
     </a>
@@ -50,7 +51,7 @@
   </nav>
 </aside>
 
-<div class="relative w-full flex flex-col h-screen overflow-y-hidden">
+<div id="aside2" class="relative w-full flex flex-col h-screen overflow-y-hidden">
   <!-- Desktop Header -->
   <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
     <div class="w-1/2"></div>
@@ -62,7 +63,7 @@
       <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
         <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
         <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
-        <a href="/public/home.html" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+        <a href="/" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
       </div>
     </div>
   </header>
@@ -70,7 +71,7 @@
   <!-- Mobile Header & Nav -->
   <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
     <div class="flex items-center justify-between">
-      <a href="/" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+      <a href="/admin" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
       <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
         <i x-show="!isOpen" class="fas fa-bars"></i>
         <i x-show="isOpen" class="fas fa-times"></i>
@@ -79,7 +80,7 @@
 
     <!-- Dropdown Nav -->
     <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
-      <a href="/" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
+      <a href="/admin" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
         <i class="fas fa-tachometer-alt mr-3"></i>
         Trang chủ
       </a>
@@ -118,32 +119,196 @@
               <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Mã môn học</th>
               <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên môn học</th>
               <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Số tín chỉ</th>
-              <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Thao tác</th>
+              <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light" th:if="${giangVienlog.getRole().getRole() == 'admin'}">Thao tác</th>
             </tr>
             </thead>
             <tbody>
               <tr th:each="monhoc : ${monHocDTOList}" class="hover:bg-grey-lighter">
-                <td class="py-4 px-6 border-b border-grey-light" th:text="${monhoc.getMaMH()}">MH001</td>
-                <td class="py-4 px-6 border-b border-grey-light" th:text="${monhoc.getTenMH()}">Toán cơ bản</td>
-                <td class="py-4 px-6 border-b border-grey-light" th:text="${monhoc.getSoTinChi()}" >4</td>
+                <td class="py-4 px-6 border-b border-grey-light" th:text="${monhoc.getMaMH()}"></td>
+                <td class="py-4 px-6 border-b border-grey-light" th:text="${monhoc.getTenMH()}"></td>
+                <td class="py-4 px-6 border-b border-grey-light" th:text="${monhoc.getSoTinChi()}"></td>
                 <td class="py-4 px-6 border-b border-grey-light">
-                  <button onclick="" class="text-blue-500 hover:text-blue-700 mr-2">Sửa</button>
-                  <button onclick="" class="text-red-500 hover:text-red-700">Xóa</button>
+                  <div th:if="${giangVienlog.getRole().getRole() == 'admin'}">
+                    <button onclick="editMonHoc(this)" th:attr="data-maMH=${monhoc.maMH}" class="text-blue-500 hover:text-blue-700 mr-2">Sửa</button>
+                    <button onclick="confirmDelete(this)" class="text-red-500 hover:text-red-700">Xóa</button>
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div class="mt-4 flex justify-end">
-          <button onclick="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Thêm</button>
+        <div class="mt-4 flex justify-end" th:if="${giangVienlog.getRole().getRole() == 'admin'}">
+          <button onclick="toggleAddForm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Thêm</button>
         </div>
       </div>
-
-
     </main>
   </div>
-
 </div>
+
+<!--form thêm-->
+<div id="addMonHocForm" class="w-full md:w-1/2 lg:w-1/3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute bg-white shadow-lg rounded-lg p-6" style="display: none;">
+  <form>
+    <div class="mb-4">
+      <label for="mamh" class="block text-gray-700 text-sm font-bold mb-2">Mã môn học:</label>
+      <input id="mamh" type="text" name="mamh" placeholder="Mã môn học" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+    </div>
+    <div class="mb-4">
+      <label for="tenmh" class="block text-gray-700 text-sm font-bold mb-2">Tên môn học:</label>
+      <input id="tenmh" type="text" name="tenmh" placeholder="Tên môn học" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+    </div>
+    <div class="mb-4">
+      <label for="sotinchi" class="block text-gray-700 text-sm font-bold mb-2">Số tín chỉ:</label>
+      <input id="sotinchi" type="text" name="sotinchi" placeholder="Số tín chỉ" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+    </div>
+    <button id="saveButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Lưu</button>
+    <button type="button" onclick="closeForm()"  class="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </form>
+</div>
+
+<!--goi api them sua xoa-->
+<script>
+  var isEditing = false;
+  function editMonHoc(element) {
+    var maMH = element.getAttribute('data-maMH');
+
+    isEditing = true;
+    fetch('/api/ttmonhoc/' + maMH)
+            .then(response => response.json())
+            .then(data => {
+
+              var mamh = data.maMH;
+              var tenmh = data.tenMH;
+              var sotinchi = data.soTinChi;
+
+              document.getElementById("mamh").value = mamh;
+              document.getElementById("tenmh").value = tenmh;
+              document.getElementById("sotinchi").value = sotinchi;
+
+              toggleAddForm();
+            })
+
+            .catch(error => console.error('Có lỗi xảy ra:', error));
+  }
+  //xoa
+  // function confirmDelete(button) {
+  //   var row = button.closest("tr");
+  //   var maMH = row.querySelector("td:nth-child(1)").innerText;
+  //   if (confirm("Bạn có chắc chắn muốn xóa môn học này không?")) {
+  //     var xhr = new XMLHttpRequest();
+  //     xhr.open("DELETE", "/api/ttmonhoc/" + maMH, true);
+  //     xhr.onreadystatechange = function() {
+  //       if (xhr.readyState === XMLHttpRequest.DONE) {
+  //         if (xhr.status === 200) {
+  //           alert("Xóa môn học thành công!");
+  //           window.location.href = "ttmonhoc";
+  //         } else {
+  //           alert("Đã xảy ra lỗi!");
+  //           window.location.href = "ttmonhoc";
+  //         }
+  //       }
+  //     };
+  //     xhr.send();
+  //   } else {
+  //     window.location.href = "ttmonhoc";
+  //     console.log("Hủy bỏ xóa môn học với mã: " + maMH);
+  //   }
+  // }
+
+  //thêm
+  $("#saveButton").click(function (e) {
+    e.preventDefault()
+    if(isEditing){
+      var maMH = $("#mamh").val();
+      var tenMH = $("#tenmh").val();
+      var soTinChi = $("#sotinchi").val();
+
+      var monHoc = {
+        "maMH": maMH,
+        "tenMH": tenMH,
+        "soTinChi": soTinChi,
+      };
+
+      $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/ttmonhoc/" + maMH,
+        data: JSON.stringify(monHoc),
+        success: function (result) {
+          if (result === "success") {
+            window.location.href = "ttmonhoc";
+          } else {
+            alert("Đã có lỗi xảy ra!");
+            window.location.href = "ttmonhoc";
+          }
+        },
+        error: function () {
+          alert("Đã có lỗi xảy ra!");
+          window.location.href = "ttmonhoc";
+        }
+      });
+    }
+    else{
+      addMonHoc();
+    }
+  })
+
+  //thêm mh
+  function addMonHoc() {
+    var mamh = document.getElementById("mamh").value;
+    var tenmh = document.getElementById("tenmh").value;
+    var sotinchi = document.getElementById("sotinchi").value;
+
+    var monHoc = {
+      maMH: mamh,
+      tenMH: tenmh,
+      soTinChi: sotinchi
+    };
+
+    fetch('/api/ttmonhoc', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(monHoc),
+    })
+            .then(response => response.json())
+            .then(sinhVien => {
+              window.location.href = "ttmonhoc";
+            })
+            .catch((error) => {
+              console.error('Có lỗi xảy ra:', error);
+              window.location.href = "ttmonhoc";
+            });
+  }
+
+  //hiển thị form
+  function closeForm() {
+    var addMonHocForm = document.getElementById("addMonHocForm");
+    addMonHocForm.style.display = "none";
+    window.location.href = "ttmonhoc";
+  }
+
+  function toggleAddForm() {
+    var addForm = document.getElementById("addMonHocForm");
+    var opact1 = document.getElementById("aside1");
+    var opact2 = document.getElementById("aside2");
+    if (addForm.style.display === "none") {
+      addForm.style.display = "block";
+      opact1.style.opacity = 0.25;
+      opact2.style.opacity = 0.25;
+    } else {
+      addForm.style.display = "none";
+      opact1.style.opacity = 1;
+      opact2.style.opacity = 1;
+      opact2.style.backgroundColor = "none";
+      window.location.href = "ttmonhoc";
+    }
+  }
+</script>
 
 <!-- AlpineJS -->
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>

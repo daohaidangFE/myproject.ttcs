@@ -13,6 +13,8 @@ public class GiangVienRepositoryImpl implements GiangVienRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
 
+
+
     public static void queryNormal(StringBuilder sql, Map<String, String> conditions) {
         try {
             for (Map.Entry<String, String> entry : conditions.entrySet()) {

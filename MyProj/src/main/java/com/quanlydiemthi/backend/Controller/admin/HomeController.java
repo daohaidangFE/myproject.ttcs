@@ -8,15 +8,13 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class HomeController {
 
-    @GetMapping("/")
+    @GetMapping("/admin")
     public String home(Model model) {
         return "/dashboard/index";
     }
 
-    @GetMapping("/login")
-    public String login(Model model) {return "/public/login";}
-
     @GetMapping("/forgotpassword")
     public String forgotpassword(Model model) {return "/public/forgotpassword";}
+
 }
 

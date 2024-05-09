@@ -29,11 +29,4 @@ public class GiangVienDTO {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Role role;
 
-    public String isActive() {
-        if(isActive) {
-            return "active";
-        } else {
-            return "inactive";
-        }
-    }
 }
