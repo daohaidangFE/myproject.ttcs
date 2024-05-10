@@ -45,13 +45,13 @@ public class SinhVienServiceImpl implements ISinhVienService {
     @Override
     public SinhVienDTO createStudent(SinhVienDTO sinhVienDTO) {
         SinhVien sinhVien = new SinhVien();
-        sinhVien.setMaSV(sinhVienDTO.getMaSV().replaceAll("\s\s+", "").trim());
+        sinhVien.setMaSV(sinhVienDTO.getMaSV().replaceAll("\\s+", "").trim());
         sinhVien.setActive(true);
         sinhVien.setTenSV(sinhVienDTO.getTenSV().replaceAll("\s\s+", " ").trim());
-        sinhVien.setGioiTinh(sinhVienDTO.getGioiTinh().replaceAll("\s\s+", " ").trim());
-        sinhVien.setUsername(sinhVienDTO.getUsername().replaceAll("\s\s+", " ").trim());
-        sinhVien.setPassword(sinhVienDTO.getPassword().replaceAll("\s\s+", " ").trim());
-        sinhVien.setEmail(sinhVienDTO.getEmail().replaceAll("\s\s+", " ").trim());
+        sinhVien.setGioiTinh(sinhVienDTO.getGioiTinh().replaceAll("\\s+", "").trim());
+        sinhVien.setUsername(sinhVienDTO.getUsername().replaceAll("\\s+", "").trim());
+        sinhVien.setPassword(sinhVienDTO.getPassword().replaceAll("\\s+", "").trim());
+        sinhVien.setEmail(sinhVienDTO.getEmail().replaceAll("\\s+", "").trim());
         Lop lop = lopRepository.findByMaLop(sinhVienDTO.getMaLop());
         sinhVien.setLop(lop);
         sinhvienRepository.save(sinhVien);
@@ -76,11 +76,19 @@ public class SinhVienServiceImpl implements ISinhVienService {
     public void updateStudent(SinhVienDTO sinhVienDTO) {
         SinhVien sinhVien = sinhvienRepository.findByMaSV(sinhVienDTO.getMaSV());
         sinhVien.setTenSV(sinhVienDTO.getTenSV().replaceAll("\s\s+", " ").trim());
-        sinhVien.setGioiTinh(sinhVienDTO.getGioiTinh().replaceAll("\s\s+", " ").trim());
-        sinhVien.setUsername(sinhVienDTO.getUsername().replaceAll("\s\s+", " ").trim());
-        sinhVien.setEmail(sinhVienDTO.getEmail().replaceAll("\s\s+", " ").trim());
+        sinhVien.setGioiTinh(sinhVienDTO.getGioiTinh().replaceAll("\\s+", "").trim());
+        sinhVien.setUsername(sinhVienDTO.getUsername().replaceAll("\\s+", "").trim());
+        sinhVien.setEmail(sinhVienDTO.getEmail().replaceAll("\\s+", "").trim());
         Lop lop = lopRepository.findByMaLop(sinhVienDTO.getMaLop());
         sinhVien.setLop(lop);
+        sinhvienRepository.save(sinhVien);
+        this.modelMapper.map(sinhVien, SinhVienDTO.class);
+    }
+
+    @Override
+    public void resetPassword(SinhVienDTO sinhVienDTO) {
+        SinhVien sinhVien = sinhvienRepository.findByMaSV(sinhVienDTO.getMaSV());
+        sinhVien.setPassword(sinhVienDTO.getNewPassword().replaceAll("\\s+", "").trim());
         sinhvienRepository.save(sinhVien);
         this.modelMapper.map(sinhVien, SinhVienDTO.class);
     }

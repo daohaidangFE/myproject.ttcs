@@ -29,4 +29,5 @@ public class GiangVienDTO {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Role role;
 
+    private String newPassword;
 }

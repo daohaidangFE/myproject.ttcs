@@ -13,4 +13,5 @@ public interface IGiangVienService {
     void updateTeacher(GiangVienDTO giangVienDTO);
     GiangVien findTeacher(String maGV);
     GiangVien findByUserName(String userName);
+    void resetPassword(GiangVienDTO giangVienDTO);
 }

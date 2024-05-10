@@ -36,6 +36,7 @@ public class ApiGiangVien {
             return "error";
         }
     }
+
     @GetMapping("/giangvien/{maGV}")
     public ResponseEntity<GiangVien> getTeacherById(@PathVariable String maGV) {
         GiangVien giangVien = giangVienService.findTeacher(maGV);

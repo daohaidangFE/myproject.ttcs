@@ -44,4 +44,6 @@ public class SinhVienDTO {
     private String maLop;
 
     private Diem diem;
+
+    private String newPassword;
 }
