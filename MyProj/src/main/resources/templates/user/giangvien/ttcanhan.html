@@ -194,29 +194,31 @@
         var maGV = document.getElementById('maGV').getAttribute('data-maGV');
 
         if (newPassword !== confirmNewPassword) {
-            alert("Mật khẩu mới không khớp!");
-            window.location.reload();
-        }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/resetpasswordgv/' + maGV, true); // Đặt URL của máy chủ và phương thức HTTP ở đây
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    alert("Mật khẩu đã được thay đổi thành công!");
-                    // window.location.reload();
-                } else {
-                    alert("Đã xảy ra lỗi khi thay đổi mật khẩu!");
-                    // window.location.reload();
+            alert("Mật khẩu mới không khớp. Vui lòng nhập lại!");
+            document.getElementById("newPassword").value = "";
+            document.getElementById("confirmNewPassword").value = "";
+            document.getElementById("newPassword").focus();
+        } else {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/resetpasswordgv/' + maGV, false); // Đặt URL của máy chủ và phương thức HTTP ở đây
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert("Mật khẩu đã được thay đổi thành công!");
+                        // window.location.reload();
+                    } else {
+                        alert("Đã xảy ra lỗi khi thay đổi mật khẩu!");
+                        // window.location.reload();
+                    }
                 }
-            }
-        };
-        var data = {
-            newPassword: newPassword,
-            maGV: maGV
-        };
-        xhr.send(JSON.stringify(data));
+            };
+            var data = {
+                newPassword: newPassword,
+                maGV: maGV
+            };
+            xhr.send(JSON.stringify(data));
+        }
     }
 
 </script>

@@ -21,7 +21,7 @@
 </head>
 <body class="bg-gray-100 font-family-karla flex">
 
-<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+<aside id="aside1" class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
     <div class="p-6">
         <a href="home" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
     </div>
@@ -41,7 +41,7 @@
     </nav>
 </aside>
 
-<div class="w-full flex flex-col h-screen overflow-y-hidden">
+<div id="aside2" class="w-full flex flex-col h-screen overflow-y-hidden">
     <!-- Desktop Header -->
     <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
         <div class="w-1/2"></div>
@@ -192,29 +192,32 @@
         var maSV = document.getElementById('maSV').getAttribute('data-maSV');
 
         if (newPassword !== confirmNewPassword) {
-            alert("Mật khẩu mới không khớp!");
-            window.location.reload();
-        }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/resetpasswordsv/' + maSV, true); // Đặt URL của máy chủ và phương thức HTTP ở đây
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    alert("Mật khẩu đã được thay đổi thành công!");
-                    // window.location.reload();
-                } else {
-                    alert("Đã xảy ra lỗi khi thay đổi mật khẩu!");
-                    // window.location.reload();
+            alert("Mật khẩu mới không khớp. Vui lòng nhập lại!");
+            document.getElementById("newPassword").value = "";
+            document.getElementById("confirmNewPassword").value = "";
+            document.getElementById("newPassword").focus();
+        } else {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/resetpasswordsv/' + maSV, false); // Đặt URL của máy chủ và phương thức HTTP ở đây
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    console.log(xhr);
+                    if (xhr.status === 200) {
+                        alert("Mật khẩu đã được thay đổi thành công!");
+                        // window.location.reload();
+                    } else {
+                        alert("Đã xảy ra lỗi khi thay đổi mật khẩu!");
+                        // window.location.reload();
+                    }
                 }
-            }
-        };
-        var data = {
-            newPassword: newPassword,
-            maSV: maSV
-        };
-        xhr.send(JSON.stringify(data));
+            };
+            var data = {
+                newPassword: newPassword,
+                maSV: maSV
+            };
+            xhr.send(JSON.stringify(data));
+        }
     }
 
 </script>
