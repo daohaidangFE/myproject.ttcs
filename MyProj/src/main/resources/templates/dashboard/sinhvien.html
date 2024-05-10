@@ -209,19 +209,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-    function validateForm() {
-        var masv = document.getElementById('masv').value;
-        var tensv = document.getElementById('tensv').value;
-        var gioiTinh = document.getElementById('gioi_tinh').value;
-        var username = document.getElementById('username').value;
-        var email = document.getElementById('email').value;
-
-        if (masv == '' || tensv == '' || gioiTinh == '' || username == '' || email == '') {
-            alert('Vui lòng điền đầy đủ thông tin vào các trường.');
-            return false;
-        }
-        return true;
-    }
     //sửa sv
     var isEditing = false;
     function editStudent(element) {
@@ -245,6 +232,8 @@
                 document.getElementById("username").value = username;
                 document.getElementById("email").value = email;
                 document.getElementById("malop").value = malop;
+
+
                 document.getElementById("masv").readOnly = true;
                 document.getElementById("username").readOnly = true;
 

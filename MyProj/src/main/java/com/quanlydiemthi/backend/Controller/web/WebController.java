@@ -35,9 +35,6 @@ public class WebController {
     private IGiangVienService giangVienService;
 
     @Autowired
-    private ILopService lopService;
-
-    @Autowired
     private IDiemService diemService;
 
 

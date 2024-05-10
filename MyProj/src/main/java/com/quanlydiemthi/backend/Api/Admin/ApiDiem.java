@@ -36,4 +36,9 @@ public class ApiDiem {
             return "error";
         }
     }
+
+    @DeleteMapping("/deleteDiem/{Id}")
+    public void deleteDiem(@PathVariable Integer Id) {
+        diemService.deleteDiem(Id);
+    }
 }

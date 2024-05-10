@@ -91,7 +91,6 @@
     <div class="w-full overflow-x-hidden border-t flex flex-col">
         <main class="w-full flex-grow p-6">
             <h1 class="text-3xl text-black pb-6">Điểm thi</h1>
-            <!--            <h1 class="text-3xl text-black pb-6" th:text="${}"></h1>-->
             <div class="overflow-x-auto">
                 <table class="table-auto w-full border-collapse border border-gray-300 bg-white">
                     <thead>
@@ -106,7 +105,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="diem : ${diemtList}"  th:attr="data-Id=${diem.id}">
+                    <tr th:each="diem : ${diemtList}" class="hover:bg-grey-lighter">
                         <td class="px-4 py-2 text-center" th:text="${diem.getMaMH()}"></td>
                         <td class="px-4 py-2 text-center" th:text="${diem.getTenHocPhan()}"></td>
                         <td class="px-4 py-2 text-center" th:text="${diem.getSoTinChi()}"></td>
@@ -115,7 +114,7 @@
                         <td class="px-4 py-2 text-center" th:text="${diem.getDiemChu()}"></td>
                         <td class="px-4 py-2 text-center">
                             <button class="text-blue-500 hover:text-blue-700 mr-2" onclick="editDiem(this)" th:attr="data-Id=${diem.getId()}">Sửa</button>
-                            <button class="text-red-500 hover:text-red-700 mr-2"  onclick="confirmDelete(this)">Xóa</button>
+                            <button class="text-red-500 hover:text-red-700 mr-2" onclick="confirmDelete(this)" th:attr="data-Id=${diem.getId()}">Xóa</button>
                         </td>
                     </tr>
                     </tbody>
@@ -231,6 +230,7 @@
                 success: function (result) {
                     if (result === "success") {
                         alert("Cập nhật điểm thành công!");
+
                         window.location.href = "chiTietDiem-" + maSV;
                     } else {
                         alert("Đã có lỗi xảy ra!");
@@ -280,27 +280,26 @@
                 window.location.href = "chiTietDiem-" + maSV;
             });
     }
-    function confirmDelete(button) {
-        var row = button.closest("tr");
-        var maMH = row.querySelector("td:nth-child(1)").innerText;
-        if (confirm("Bạn có chắc chắn muốn xóa  không?")) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("DELETE", "/api/sinhvien/" + maSV, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        alert("Xóa sinh viên thành công!");
-                        window.location.href = "sinhvien";
+
+    // xoá điểm
+    function confirmDelete(element) {
+        var Id = element.getAttribute('data-Id');
+        if (confirm("Bạn có chắc chắn muốn xóa điểm này không?")) {
+            fetch('/api/deleteDiem/' + Id, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Đã xóa điểm thành công!");
+                        window.location.reload(); // Load lại trang sau khi xóa
                     } else {
-                        alert("Đã xảy ra lỗi!");
-                        window.location.href = "sinhvien";
+                        throw new Error('Đã có lỗi xảy ra khi xóa điểm.');
                     }
-                }
-            };
-            xhr.send();
-        } else {
-            window.location.href = "sinhvien";
-            console.log("Hủy bỏ xóa sinh viên với mã: " + maSV);
+                })
+                .catch(error => {
+                    console.error('Đã có lỗi xảy ra:', error);
+                    alert("Đã có lỗi xảy ra khi xóa.");
+                });
         }
     }
     function toggleAddForm() {
@@ -322,8 +321,8 @@
     }
     function closeForm() {
         var DiemDetailForm = $("#addDiemForm");
-        DiemDetailForm.hide(); // Ẩn form mà không cần reload trang
-        window.location.reload(); // Load lại trang hiện tại
+        DiemDetailForm.hide();
+        window.location.reload();
     }
 
 </script>

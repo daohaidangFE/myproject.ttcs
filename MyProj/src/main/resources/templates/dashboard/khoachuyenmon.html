@@ -113,13 +113,13 @@
                     <i class="fas fa-list mr-3"></i> Danh sách khoa
                 </p>
                 <div class="bg-white overflow-auto">
-                    <table class="text-left w-full border-collapse"> <!--Border collapse doesn't work on this site yet but it's available in newer tailwind versions -->
+                    <table class="text-left w-full border-collapse">
                         <thead>
                         <tr>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Mã khoa</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tên khoa</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Danh sách lớp</th>
-                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Thao tác</th>
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light" th:if="${giangVienlog.getRole().getRole() == 'admin'}">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -127,15 +127,14 @@
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${khoa.getMaK()}"></td>
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${khoa.getTenK()}"></td>
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${khoa.getDsLop()}"></td>
-                            <td class="py-4 px-6 border-b border-grey-light">
+                            <td class="py-4 px-6 border-b border-grey-light" th:if="${giangVienlog.getRole().getRole() == 'admin'}">
                                 <button onclick="" class="text-blue-500 hover:text-blue-700 mr-2">Sửa</button>
-                                <button onclick="" class="text-red-500 hover:text-red-700">Xóa</button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4 flex justify-end">
+                <div class="mt-4 flex justify-end" th:if="${giangVienlog.getRole().getRole() == 'admin'}">
                     <button onclick="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Thêm</button>
                 </div>
             </div>
