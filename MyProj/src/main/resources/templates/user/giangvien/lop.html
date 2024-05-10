@@ -91,29 +91,29 @@
         <main class="w-full flex-grow p-6">
             <h1 class="text-3xl text-black pb-6">Xin chào!</h1>
             <div class="w-full mt-12">
-<!--                <form id="searchForm" action="lop/sinhvien" method="get">-->
-<!--                    <div class="flex mb-4">-->
-<!--                        <div class="mr-4 flex-grow">-->
-<!--                            <input name="masv" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Mã sinh viên">-->
-<!--                        </div>-->
-<!--                        <div class="mr-4 flex-grow">-->
-<!--                            <input name="tensv" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Tên sinh viên">-->
-<!--                        </div>-->
-<!--                        <div class="mr-4 flex-grow">-->
-<!--                            <select name="gioi_tinh" class="block w-full px-3 py-2.5 text-gray-700 border rounded-lg focus:outline-none ">-->
-<!--                                <option value="">Tất cả</option>-->
-<!--                                <option value="nam">Nam</option>-->
-<!--                                <option value="nu">Nữ</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                        <div class="mr-4 flex-grow">-->
-<!--                            <input name="username" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Tên tài khoản">-->
-<!--                        </div>-->
-<!--                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">-->
-<!--                            Tìm kiếm-->
-<!--                        </button>-->
-<!--                    </div>-->
-<!--                </form>-->
+                <form id="searchForm" action="/lop" method="get">
+                    <div class="flex mb-4">
+                        <div class="mr-4 flex-grow">
+                            <input name="masv" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Mã sinh viên">
+                        </div>
+                        <div class="mr-4 flex-grow">
+                            <input name="tensv" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Tên sinh viên">
+                        </div>
+                        <div class="mr-4 flex-grow">
+                            <select name="gioi_tinh" class="block w-full px-3 py-2.5 text-gray-700 border rounded-lg focus:outline-none ">
+                                <option value="">Tất cả</option>
+                                <option value="nam">Nam</option>
+                                <option value="nu">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="mr-4 flex-grow">
+                            <input name="username" class="block w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" type="text" placeholder="Tên tài khoản">
+                        </div>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                </form>
                 <div class="text-xl pb-3 flex items-center">
                     <i class="fas fa-list mr-3"></i><h2 class="text-xl text-black" th:text="${giangVienlog.getLop().getTenLop()}" ></h2>
                 </div>
@@ -126,23 +126,25 @@
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Tài khoản</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Giới tính</th>
                             <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Email</th>
-
+                            <th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
                         <!-- Dòng 1 -->
-                            <tr class="hover:bg-gray-200"  th:each="sinhvien : ${sinhVienList}">
-                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getMaSV()}"></td>
-                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getTenSV()}"></td>
-                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getUsername()}"></td>
-                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getGioiTinh()}"></td>
-                                <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getEmail()}"></td>
-                            </tr>
+                        <tr class="hover:bg-gray-200"  th:each="sinhvien : ${sinhVienDTOList}">
+                            <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getMaSV()}"></td>
+                            <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getTenSV()}"></td>
+                            <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getUsername()}"></td>
+                            <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getGioiTinh()}"></td>
+                            <td class="py-4 px-6 border-b border-gray-200" th:text="${sinhvien.getEmail()}"></td>
+                            <td class="py-4 px-6 border-b border-gray-200">
+                                <button class="text-blue-500 hover:text-blue-700 mr-2" onclick="showDetailDiem(this)"  th:attr="data-Id=${sinhvien.getMaSV()}">Chi tiết điểm</button>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
 
 
             <div class="w-full mt-12 hidden">
@@ -225,6 +227,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
 <!-- ChartJS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+<script>
+    function showDetailDiem(element) {
+        // Lấy mã sinh viên từ thuộc tính data-Id của liên kết
+        var maSV = element.getAttribute("data-Id");
+
+        // Tạo URL tới trang chiTietDiem với mã sinh viên làm tham số
+        var url = "/chiTietDiem-" + maSV;
+
+        // Chuyển đến trang mới
+        window.location.href = url;
+    }
+</script>
 
 </body>
 </html>

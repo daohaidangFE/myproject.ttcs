@@ -12,5 +12,7 @@ public interface IDiemService {
     List<DiemDTO> findAll(String maSV);
     List<DiemDTO> findByMaSV(String maSV);
     void deleteDiem(Integer Id);
-    Diem findDiem(Integer Id);
+    DiemDTO findDiem(Integer Id);
+    void createDiem(DiemDTO diemDTO);
+    void updateDiem(DiemDTO diemDTO);
 }

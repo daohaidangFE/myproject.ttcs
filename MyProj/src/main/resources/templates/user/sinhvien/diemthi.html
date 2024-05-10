@@ -94,7 +94,7 @@
                 <table class="table-auto w-full border-collapse border border-gray-300 bg-white">
                     <thead>
                     <tr class="bg-gray-100">
-                        <th class="px-4 py-2 text-center">STT</th>
+                        <th class="px-4 py-2 text-center">Mã môn học</th>
                         <th class="px-4 py-2 text-center">Tên học phần</th>
                         <th class="px-4 py-2 text-center">Số tín chỉ</th>
                         <th class="px-4 py-2 text-center">Tổng kết (hệ 10)</th>
@@ -104,17 +104,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                            <tr th:each="diem : ${diemtList}"  th:attr="data-Id=${diem.id}">
-                                <td class="px-4 py-2 text-center" th:text="${diem.getId()}"></td>
-                                <td class="px-4 py-2 text-center" th:text="${diem.getTenHocPhan()}"></td>
-                                <td class="px-4 py-2 text-center" th:text="${diem.getSoTinChi()}"></td>
-                                <td class="px-4 py-2 text-center" th:text="${diem.getDiemTongKet()}"></td>
-                                <td class="px-4 py-2 text-center" th:text="${diem.getDiemHe4()}"></td>
-                                <td class="px-4 py-2 text-center" th:text="${diem.getDiemChu()}"></td>
-                                <td class="px-4 py-2 text-center">
-                                    <button class="text-blue-500 hover:text-blue-700 mr-2" onclick="showdetailDiem(this)" th:attr="data-Id=${diem.getId()}">Xem chi tiết</button>
-                                </td>
-                            </tr>
+                    <tr th:each="diem : ${diemtList}"  th:attr="data-Id=${diem.id}">
+                        <td class="px-4 py-2 text-center" th:text="${diem.getMaMH()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getTenHocPhan()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getSoTinChi()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getDiemTongKet()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getDiemHe4()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getDiemChu()}"></td>
+                        <td class="px-4 py-2 text-center">
+                            <button class="text-blue-500 hover:text-blue-700 mr-2" onclick="showdetailDiem(this)" th:attr="data-Id=${diem.getId()}">Xem chi tiết</button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

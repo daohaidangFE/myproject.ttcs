@@ -87,14 +87,28 @@ public class WebController {
         }
     }
 
+    @GetMapping("/chiTietDiem-{maSV}")
+    public String detailDiem(Model model, HttpSession session, @PathVariable String maSV) {
+        Object loggedInUser = session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            List<DiemDTO> diemDTOList = diemService.findAll(maSV);
+            model.addAttribute("diemtList", diemDTOList);
+            return "/user/giangvien/chiTietDiem";
+        } else {
+            return "redirect:/";
+        }
+
+    }
     //xem điểm của sinh viên
     @GetMapping("/diemthi")
     public String  getAllDiem(Model model, HttpSession session) {
         Object loggedInUser = session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
             if (loggedInUser instanceof SinhVien sinhVien) {
+                SinhVien sinhVien1 = sinhVienService.findByUsername(sinhVien.getUsername());
                 List<DiemDTO> diemDTOList = diemService.findAll(sinhVien.getMaSV());
                 model.addAttribute("diemtList", diemDTOList);
+                model.addAttribute("sinhVien", sinhVien1);
                 return "/user/sinhvien/diemthi";
             }
             else {
@@ -107,8 +121,8 @@ public class WebController {
 
     //xem điểm chi tiết
     @GetMapping("/diemthi/{Id}")
-    public ResponseEntity<Diem> getDiembyId(@PathVariable Integer Id) {
-        Diem diem = diemService.findDiem(Id);
+    public ResponseEntity<DiemDTO> getDiembyId(@PathVariable Integer Id) {
+        DiemDTO diem = diemService.findDiem(Id);
         if (diem != null) {
             return ResponseEntity.ok(diem);
         } else {
@@ -163,41 +177,27 @@ public class WebController {
         }
     }
 
-    //xem danh sách sinh viên trong lớp của giảng viên
     @GetMapping("/lop")
-    public String getLopOfGiangVien(Model model, HttpSession session) {
+    public String getAllSinhVien(@RequestParam Map<String, String> params, Model model, HttpSession session) {
+
         Object loggedInUser = session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
+            String username;
             if (loggedInUser instanceof GiangVien giangVien) {
-                List<SinhVien> sinhVienList = lopService.findAllSinhVienByLop(giangVien.getLop().getMaLop());
-                GiangVien giangVienlog = giangVienService.findByUserName(giangVien.getUsername());
-                model.addAttribute("sinhVienList", sinhVienList);
+                username = giangVien.getUsername();
+                GiangVien giangVienlog = giangVienService.findByUserName(username);
+                params.put("maGV", giangVienlog.getMaGV());
+                List<SinhVienDTO> sinhVienDTOList = sinhVienService.findStudents(params);
+                model.addAttribute("sinhVienDTOList", sinhVienDTOList);
                 model.addAttribute("giangVienlog", giangVienlog);
                 return "/user/giangvien/lop";
-
-            } else {
+            }
+            else {
                 return "redirect:/";
             }
-        } else {
+        }
+        else{
             return "redirect:/";
         }
     }
-    //tim kiem sinh vien trong lop
-//    @GetMapping("/lop")
-//    public String getAllSinhVien(@RequestParam Map<String, String> params, Model model, HttpSession session) {
-//        Object loggedInUser = session.getAttribute("loggedInUser");
-//        if (loggedInUser != null) {
-//            String username;
-//            if (loggedInUser instanceof GiangVien giangVien) {
-//                username = giangVien.getUsername();
-//                GiangVien giangVienlog = giangVienService.findByUserName(username);
-//                params.put("maGV", giangVienlog.getMaGV());
-//                List<SinhVienDTO> sinhVienDTOList = sinhVienService.findStudents(params);
-//                model.addAttribute("sinhVienDTOList", sinhVienDTOList);
-//                model.addAttribute("giangVienlog", giangVienlog);
-//            }
-//        }
-//
-//        return "/user/giangvien/lop";
-//    }
 }

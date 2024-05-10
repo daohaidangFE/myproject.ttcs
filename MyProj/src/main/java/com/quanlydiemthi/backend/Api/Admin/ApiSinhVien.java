@@ -20,7 +20,7 @@ public class ApiSinhVien {
         sinhVienService.deleteStudent(maSV);
     }
 
-    @PostMapping("/sinhvien")
+    @PostMapping("/addSinhvien")
     public ResponseEntity<?> addSinhVien(@RequestBody SinhVienDTO sinhVienDTO) {
         SinhVienDTO createSinhVien = sinhVienService.createStudent(sinhVienDTO);
         return ResponseEntity.ok().body(createSinhVien);
@@ -35,8 +35,8 @@ public class ApiSinhVien {
         }
     }
     @GetMapping("/sinhvien/{maSV}")
-    public ResponseEntity<SinhVien> getStudentById(@PathVariable String maSV) {
-        SinhVien sinhVien = sinhVienService.findStudent(maSV);
+    public ResponseEntity<SinhVienDTO> getStudentById(@PathVariable String maSV) {
+        SinhVienDTO sinhVien = sinhVienService.findStudent(maSV);
         if (sinhVien != null) {
             return ResponseEntity.ok(sinhVien);
         } else {

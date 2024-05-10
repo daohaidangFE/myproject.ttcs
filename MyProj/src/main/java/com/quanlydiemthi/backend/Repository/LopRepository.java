@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface LopRepository extends JpaRepository<Lop, Integer> {
     List<Lop> searchAllByTenLopContainingIgnoreCase(String tenLop);
-
+    Lop findByMaLop(String maLop);
 }

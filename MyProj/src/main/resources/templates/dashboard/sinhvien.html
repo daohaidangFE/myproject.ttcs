@@ -60,6 +60,7 @@
             <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
+                <a href="/homeGV" class="block px-4 py-2 account-link hover:text-white" th:if="${giangVienlog.getRole().getRole() == 'giangvien'}">Home</a>
                 <a href="/" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
             </div>
         </div>
@@ -152,8 +153,8 @@
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getGioiTinh()}"></td>
                             <td class="py-4 px-6 border-b border-grey-light" th:text="${sinhVien.getEmail()}"></td>
                             <td class="py-4 px-6 border-b border-gray-200">
-                                    <button class="text-blue-500 hover:text-blue-700 mr-2" onclick="editStudent(this)" th:attr="data-maSV=${sinhVien.maSV}">Sửa</button>
-                                    <button class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</button>
+                                <button class="text-blue-500 hover:text-blue-700 mr-2" onclick="editStudent(this)" th:attr="data-maSV=${sinhVien.maSV}">Sửa</button>
+                                <button class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</button>
                             </td>
                         </tr>
                         </tbody>
@@ -187,6 +188,10 @@
             <input id="username" type="text" name="username" placeholder="Tài khoản" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
         </div>
         <div class="mb-4">
+            <label for="malop" class="block text-gray-700 text-sm font-bold mb-2">Mã lớp:</label>
+            <input id="malop" type="text" name="malop" placeholder="Mã lớp" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
             <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
             <input id="email" name="email" type="email" placeholder="Email" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
         </div>
@@ -201,6 +206,7 @@
 
 <!-- AlpineJS -->
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
     function validateForm() {
@@ -231,13 +237,14 @@
                 var gioiTinh = data.gioiTinh;
                 var username = data.username;
                 var email = data.email;
+                var malop = data.maLop;
 
                 document.getElementById("masv").value = masv;
                 document.getElementById("tensv").value = tensv;
                 document.getElementById("gioi_tinh").value = gioiTinh;
                 document.getElementById("username").value = username;
                 document.getElementById("email").value = email;
-
+                document.getElementById("malop").value = malop;
                 document.getElementById("masv").readOnly = true;
                 document.getElementById("username").readOnly = true;
 
@@ -296,6 +303,7 @@
         var username = document.getElementById("username").value;
         var gioi_tinh = document.getElementById("gioi_tinh").value;
         var email = document.getElementById("email").value;
+        var malop = document.getElementById("malop").value;
 
         var sinhVien = {
             maSV: masv,
@@ -303,10 +311,11 @@
             username: username,
             gioiTinh: gioi_tinh,
             password: username,
-            email: email
+            email: email,
+            maLop: malop
         };
 
-        fetch('/api/sinhvien', {
+        fetch('/api/addSinhvien', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

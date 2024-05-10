@@ -1,8 +1,10 @@
 package com.quanlydiemthi.backend.Service.Impl;
 
 
+import com.quanlydiemthi.backend.Entity.Lop;
 import com.quanlydiemthi.backend.Entity.SinhVien;
 import com.quanlydiemthi.backend.Payloads.SinhVienDTO;
+import com.quanlydiemthi.backend.Repository.LopRepository;
 import com.quanlydiemthi.backend.Repository.SinhVienRepository;
 import com.quanlydiemthi.backend.Service.ISinhVienService;
 import org.modelmapper.ModelMapper;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 public class SinhVienServiceImpl implements ISinhVienService {
     @Autowired
     private SinhVienRepository sinhvienRepository;
+    @Autowired
+    private LopRepository lopRepository;
 
     @Autowired
     public ModelMapper modelMapper;
@@ -48,13 +52,24 @@ public class SinhVienServiceImpl implements ISinhVienService {
         sinhVien.setUsername(sinhVienDTO.getUsername().replaceAll("\s\s+", " ").trim());
         sinhVien.setPassword(sinhVienDTO.getPassword().replaceAll("\s\s+", " ").trim());
         sinhVien.setEmail(sinhVienDTO.getEmail().replaceAll("\s\s+", " ").trim());
+        Lop lop = lopRepository.findByMaLop(sinhVienDTO.getMaLop());
+        sinhVien.setLop(lop);
         sinhvienRepository.save(sinhVien);
         return this.modelMapper.map(sinhVien, SinhVienDTO.class);
     }
 
     @Override
-    public SinhVien findStudent(String maSV) {
-        return sinhvienRepository.findByMaSV(maSV);
+    public SinhVienDTO findStudent(String maSV) {
+        SinhVien sinhVien = sinhvienRepository.findByMaSV(maSV);
+        SinhVienDTO sinhVienDTO = new SinhVienDTO();
+        sinhVienDTO.setMaSV(maSV);
+        sinhVienDTO.setMaLop(sinhVien.getLop().getMaLop());
+        sinhVienDTO.setTenSV(sinhVien.getTenSV());
+        sinhVienDTO.setUsername(sinhVien.getUsername());
+        sinhVienDTO.setGioiTinh(sinhVien.getGioiTinh());
+        sinhVienDTO.setTenLop(sinhVien.getLop().getTenLop());
+        sinhVienDTO.setEmail(sinhVien.getEmail());
+        return sinhVienDTO;
     }
 
     @Override
@@ -64,6 +79,8 @@ public class SinhVienServiceImpl implements ISinhVienService {
         sinhVien.setGioiTinh(sinhVienDTO.getGioiTinh().replaceAll("\s\s+", " ").trim());
         sinhVien.setUsername(sinhVienDTO.getUsername().replaceAll("\s\s+", " ").trim());
         sinhVien.setEmail(sinhVienDTO.getEmail().replaceAll("\s\s+", " ").trim());
+        Lop lop = lopRepository.findByMaLop(sinhVienDTO.getMaLop());
+        sinhVien.setLop(lop);
         sinhvienRepository.save(sinhVien);
         this.modelMapper.map(sinhVien, SinhVienDTO.class);
     }

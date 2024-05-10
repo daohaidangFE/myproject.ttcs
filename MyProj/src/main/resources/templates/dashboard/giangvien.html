@@ -63,6 +63,7 @@
             <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
                 <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
+                <a href="/homeGV" class="block px-4 py-2 account-link hover:text-white" th:if="${giangVienlog.getRole().getRole() == 'giangvien'}">Home</a>
                 <a href="/" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
             </div>
         </div>
@@ -150,24 +151,24 @@
                         </thead>
                         <tbody>
 
-                            <tr th:each="giangVien : ${giangVienDTOList}" class="hover:bg-grey-lighter">
-                                <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getMaGV()}"></td>
-                                <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getTenGV()}"></td>
-                                <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getGioiTinh()}"></td>
-                                <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getUsername()}"></td>
-                                <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getEmail()}"></td>
-                                <td class="py-4 px-6 border-b border-grey-light">
-                                    <div th:if="${giangVienlog.getRole().getRole() == 'admin'}">
-                                        <!-- Hiển thị nút Sửa -->
-                                        <a href="#" class="text-blue-500 hover:text-blue-700 mr-2" onclick="editTeacher(this)" th:attr="data-maGV=${giangVien.maGV}">Sửa</a>
-                                        <!-- Hiển thị nút Xóa -->
-                                        <a href="#" class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</a>
-                                    </div>
-                            </tr>
+                        <tr th:each="giangVien : ${giangVienDTOList}" class="hover:bg-grey-lighter">
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getMaGV()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getTenGV()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getGioiTinh()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getUsername()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light" th:text="${giangVien.getEmail()}"></td>
+                            <td class="py-4 px-6 border-b border-grey-light">
+                                <div th:if="${giangVienlog.getRole().getRole() == 'admin'}">
+                                    <!-- Hiển thị nút Sửa -->
+                                    <a href="#" class="text-blue-500 hover:text-blue-700 mr-2" onclick="editTeacher(this)" th:attr="data-maGV=${giangVien.maGV}">Sửa</a>
+                                    <!-- Hiển thị nút Xóa -->
+                                    <a href="#" class="text-red-500 hover:text-red-700" onclick="confirmDelete(this)">Xóa</a>
+                                </div>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4 flex justify-end" th:if="${giangVienlog.getRole().getRole() == 'admin'}">
+                <div class="mt-4 flex justify-end">
                     <button onclick="toggleAddForm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Thêm</button>
                 </div>
             </div>

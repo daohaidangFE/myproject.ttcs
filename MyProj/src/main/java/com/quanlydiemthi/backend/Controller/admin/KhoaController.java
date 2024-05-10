@@ -1,8 +1,11 @@
 package com.quanlydiemthi.backend.Controller.admin;
 
 
+import com.quanlydiemthi.backend.Entity.GiangVien;
 import com.quanlydiemthi.backend.Payloads.KhoaDTO;
+import com.quanlydiemthi.backend.Service.IGiangVienService;
 import com.quanlydiemthi.backend.Service.Impl.KhoaServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,9 +19,20 @@ import java.util.List;
 public class KhoaController {
     @Autowired
     private KhoaServiceImpl khoaService;
+    @Autowired
+    private IGiangVienService giangVienService;
 
     @GetMapping("/khoachuyenmon")
-    public String getAllKhoa(Model model) {
+    public String getAllKhoa(Model model, HttpSession session) {
+        Object loggedInUser = session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            String username;
+            if (loggedInUser instanceof GiangVien giangVien) {
+                username = giangVien.getUsername();
+                GiangVien giangVienlog = giangVienService.findByUserName(username);
+                model.addAttribute("giangVienlog", giangVienlog);
+            }
+        }
         List<KhoaDTO> khoaDTOList = khoaService.findAll();
         model.addAttribute("khoaDTOList", khoaDTOList);
         return "/dashboard/khoachuyenmon";

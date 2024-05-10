@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface ISinhVienService {
-//    void deleteSinhVienById(Integer Id);
+    //    void deleteSinhVienById(Integer Id);
     List<SinhVienDTO> findStudents(Map<String, String> params);
     void deleteStudent(String id);
     SinhVienDTO createStudent(SinhVienDTO studentDTO);
-    SinhVien findStudent(String maSV);
+    SinhVienDTO findStudent(String maSV);
     void updateStudent(SinhVienDTO sinhVienDTO);
     SinhVien findByUsername(String userName);
 }

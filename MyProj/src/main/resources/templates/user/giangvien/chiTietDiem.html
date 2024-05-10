@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý điểm thi</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Tailwind -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+        .font-family-karla { font-family: karla; }
+        .bg-sidebar { background: #3d68ff; }
+        .cta-btn { color: #3d68ff; }
+        .upgrade-btn { background: #1947ee; }
+        .upgrade-btn:hover { background: #0038fd; }
+        .active-nav-link { background: #1947ee; }
+        .nav-item:hover { background: #1947ee; }
+        .account-link:hover { background: #3d68ff; }
+    </style>
+</head>
+<body class="bg-gray-100 font-family-karla flex">
+
+<aside id="aside1" class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <div class="p-6">
+        <a href="homeGV" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+    </div>
+    <nav class="text-white text-base font-semibold pt-3">
+        <a href="homeGV" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Trang chủ
+        </a>
+        <a href="lop" class="active-nav-link flex items-center text-white py-4 pl-6 nav-item">
+            <i class="fa fa-user-graduate mr-3 fa-inverse"></i>
+            Lớp
+        </a>
+        <a href="ttcanhanGV" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100 ">
+            <i class="fa fa-info fa-inverse mr-3"></i>
+            Thông tin cá nhân
+        </a>
+    </nav>
+</aside>
+
+<div id="aside2" class="relative w-full flex flex-col h-screen overflow-y-hidden">
+    <!-- Desktop Header -->
+    <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+        <div class="w-1/2"></div>
+        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+            <button @click="isOpen = !isOpen" class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">
+                <img src="https://code.ptit.edu.vn/2020/images/logo_ptit.png">
+            </button>
+            <button x-show="isOpen" @click="isOpen = false" class="h-full w-full fixed inset-0 cursor-default"></button>
+            <div x-show="isOpen" class="absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                <a href="#" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                <a href="#" class="block px-4 py-2 account-link hover:text-white">Support</a>
+                <a href="/admin" class="block px-4 py-2 account-link hover:text-white">Trang ADMIN</a>
+                <a href="/" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Header & Nav -->
+    <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+        <div class="flex items-center justify-between">
+            <a href="homeGV" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Quản lý điểm thi</a>
+            <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+                <i x-show="!isOpen" class="fas fa-bars"></i>
+                <i x-show="isOpen" class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Dropdown Nav -->
+        <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+            <a href="/homeGV" class="flex items-center text-white py-4 pl-6 nav-item opacity-75 hover:opacity-100">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                Trang chủ
+            </a>
+            <a href="/lop" class="active-nav-link flex items-center text-white py-4 pl-6 nav-item">
+                <i class="fa fa-info fa-inverse mr-3"></i>
+                Lớp
+            </a>
+            <a href="/ttcanhanGV" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+                <i class="fa fa-table fa-inverse mr-3"></i>
+                Thông tin cá nhân
+            </a>
+        </nav>
+
+    </header>
+
+    <div class="w-full overflow-x-hidden border-t flex flex-col">
+        <main class="w-full flex-grow p-6">
+            <h1 class="text-3xl text-black pb-6">Điểm thi</h1>
+            <!--            <h1 class="text-3xl text-black pb-6" th:text="${}"></h1>-->
+            <div class="overflow-x-auto">
+                <table class="table-auto w-full border-collapse border border-gray-300 bg-white">
+                    <thead>
+                    <tr class="bg-gray-100">
+                        <th class="px-4 py-2 text-center">Mã môn học</th>
+                        <th class="px-4 py-2 text-center">Tên học phần</th>
+                        <th class="px-4 py-2 text-center">Số tín chỉ</th>
+                        <th class="px-4 py-2 text-center">Tổng kết (hệ 10)</th>
+                        <th class="px-4 py-2 text-center">Tổng kết (hệ 4)</th>
+                        <th class="px-4 py-2 text-center">Tổng kết (dạng chữ)</th>
+                        <th class="px-4 py-2 text-center">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="diem : ${diemtList}"  th:attr="data-Id=${diem.id}">
+                        <td class="px-4 py-2 text-center" th:text="${diem.getMaMH()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getTenHocPhan()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getSoTinChi()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getDiemTongKet()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getDiemHe4()}"></td>
+                        <td class="px-4 py-2 text-center" th:text="${diem.getDiemChu()}"></td>
+                        <td class="px-4 py-2 text-center">
+                            <button class="text-blue-500 hover:text-blue-700 mr-2" onclick="editDiem(this)" th:attr="data-Id=${diem.getId()}">Sửa</button>
+                            <button class="text-red-500 hover:text-red-700 mr-2"  onclick="confirmDelete(this)">Xóa</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4 flex justify-end">
+                <button onclick="toggleAddForm()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Thêm điểm</button>
+            </div>
+        </main>
+    </div>
+
+</div>
+<div id="addDiemForm" class="w-full md:w-1/2 lg:w-1/3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute bg-white shadow-lg rounded-lg p-6" style="display: none;">
+    <form>
+        <div class="mb-4">
+            <label for="hocky" class="block text-gray-700 text-sm font-bold mb-2">Học kỳ:</label>
+            <input id="hocky" type="text" name="hocky" placeholder="Học kỳ" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="tenmonhoc" class="block text-gray-700 text-sm font-bold mb-2">Tên môn học:</label>
+            <input id="tenmonhoc" type="text" name="tenmonhoc" placeholder="Tên môn học" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="mamh" class="block text-gray-700 text-sm font-bold mb-2">Mã môn học:</label>
+            <input id="mamh" type="text" name="mamh" placeholder="Mã môn học" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="diemgiuaky" class="block text-gray-700 text-sm font-bold mb-2">Điểm giữa kỳ:</label>
+            <input id="diemgiuaky" type="text" name="diemgiuaky" placeholder="Điểm giữa kỳ" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="diemcuoiky" class="block text-gray-700 text-sm font-bold mb-2">Điểm cuối kỳ:</label>
+            <input id="diemcuoiky" type="text" name="diemcuoiky" placeholder="Điểm cuối kỳ" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="masv" class="block text-gray-700 text-sm font-bold mb-2">Mã sinh viên:</label>
+            <input id="masv" type="text" name="masv" placeholder="Mã sinh viên" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <label for="id"></label><input hidden="hidden" id="id">
+        <button id="saveButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Lưu</button>
+        <button type="button" onclick="closeForm()" class="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </form>
+</div>
+
+<!-- AlpineJS -->
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+<!-- Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+<!-- ChartJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+<script>
+    var isEditing = false;
+    function editDiem(element) {
+        var Id = element.getAttribute('data-Id');
+        isEditing = true;
+        fetch('/diemthi/' + Id)
+            .then(response => response.json())
+            .then(data => {
+                var id = data.id;
+                var masv = data.maSV;
+                var hocky = data.hocKy;
+                var diemgiuaky = data.diemGiuaKy;
+                var diemcuoiky = data.diemCuoiKy;
+                var tenmonhoc = data.tenHocPhan;
+                var mamh = data.maMH;
+
+                document.getElementById("hocky").value = hocky;
+                document.getElementById("diemgiuaky").value = diemgiuaky;
+                document.getElementById("diemcuoiky").value = diemcuoiky;
+                document.getElementById("tenmonhoc").value = tenmonhoc;
+                document.getElementById("mamh").value = mamh;
+                document.getElementById("id").value = id;
+                document.getElementById("masv").value = masv;
+
+                document.getElementById("hocky").readOnly = true;
+                document.getElementById("tenmonhoc").readOnly = true;
+                document.getElementById("mamh").readOnly = true;
+
+                toggleAddForm();
+            })
+
+            .catch(error => console.error('Có lỗi xảy ra:', error));
+    }
+
+    $("#saveButton").click(function (e) {
+        e.preventDefault()
+        if(isEditing){
+            var id = $("#id").val();
+            var diemCuoiKy = $("#diemcuoiky").val();
+            var diemGiuaKy = $("#diemgiuaky").val();
+            var hocKy = $("#hocky").val();
+            var maMH = $("#mamh").val();
+            var maSV = $("#masv").val();
+
+            var diem = {
+                "id": id,
+                "diemCuoiKy": diemCuoiKy,
+                "diemGiuaKy": diemGiuaKy,
+                "hocKy":hocKy,
+                "maMH": maMH,
+                "maSV": maSV
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/api/updateDiem",
+                data: JSON.stringify(diem),
+                success: function (result) {
+                    if (result === "success") {
+                        alert("Cập nhật điểm thành công!");
+                        window.location.href = "chiTietDiem-" + maSV;
+                    } else {
+                        alert("Đã có lỗi xảy ra!");
+                        // window.location.href = "sinhvien";
+                    }
+                },
+                error: function () {
+                    alert("Đã có lỗi xảy ra!");
+                    // window.location.href = "sinhvien";
+                }
+            });
+        }
+        else{
+            addDiem();
+        }
+    })
+
+    function addDiem() {
+        var diemCuoiKy = $("#diemcuoiky").val();
+        var diemGiuaKy = $("#diemgiuaky").val();
+        var hocKy = $("#hocky").val();
+        var maMH = $("#mamh").val();
+        var maSV = $("#masv").val();
+
+        var diem = {
+            "diemCuoiKy": diemCuoiKy,
+            "diemGiuaKy": diemGiuaKy,
+            "hocKy":hocKy,
+            "maMH": maMH,
+            "maSV": maSV,
+        };
+
+        fetch('/api/addDiem', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(diem),
+        })
+            .then(response => response.json())
+            .then(diem => {
+                alert("Thêm điểm thành công")
+                window.location.href = "chiTietDiem-" + maSV;
+            })
+            .catch((error) => {
+                console.error('Có lỗi xảy ra:', error);
+                window.location.href = "chiTietDiem-" + maSV;
+            });
+    }
+    function confirmDelete(button) {
+        var row = button.closest("tr");
+        var maMH = row.querySelector("td:nth-child(1)").innerText;
+        if (confirm("Bạn có chắc chắn muốn xóa  không?")) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "/api/sinhvien/" + maSV, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        alert("Xóa sinh viên thành công!");
+                        window.location.href = "sinhvien";
+                    } else {
+                        alert("Đã xảy ra lỗi!");
+                        window.location.href = "sinhvien";
+                    }
+                }
+            };
+            xhr.send();
+        } else {
+            window.location.href = "sinhvien";
+            console.log("Hủy bỏ xóa sinh viên với mã: " + maSV);
+        }
+    }
+    function toggleAddForm() {
+        var maSV = $("#masv").val();
+        var addForm = document.getElementById("addDiemForm");
+        var opact1 = document.getElementById("aside1");
+        var opact2 = document.getElementById("aside2");
+        if (addForm.style.display === "none") {
+            addForm.style.display = "block";
+            opact1.style.opacity = 0.25;
+            opact2.style.opacity = 0.25;
+        } else {
+            addForm.style.display = "none";
+            opact1.style.opacity = 1;
+            opact2.style.opacity = 1;
+            opact2.css("background-color", "transparent");
+            window.location.href = "chiTietDiem-" + maSV;
+        }
+    }
+    function closeForm() {
+        var DiemDetailForm = $("#addDiemForm");
+        DiemDetailForm.hide(); // Ẩn form mà không cần reload trang
+        window.location.reload(); // Load lại trang hiện tại
+    }
+
+</script>
+</body>
+</html>

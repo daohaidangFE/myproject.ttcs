@@ -15,4 +15,3 @@ public interface DiemRepository extends JpaRepository<Diem, Integer> {
     Diem findByid(Integer id);
 
 }
-
