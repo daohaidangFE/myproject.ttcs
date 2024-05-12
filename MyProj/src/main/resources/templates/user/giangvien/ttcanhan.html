@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý điểm thi</title>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Tailwind -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
@@ -138,36 +138,41 @@
                 </div>
             </div>
             <div class="flex justify-end mt-6">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="toggleAddForm()">Đổi mật khẩu</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="changePassword()">Đổi mật khẩu</button>
             </div>
         </main>
     </div>
 </div>
 
-
-<form id="changePasswordForm" class="w-full md:w-1/2 lg:w-1/3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute bg-white shadow-lg rounded-lg p-6" style="display: none;">
-    <div class="mb-4">
-        <label for="newPassword" class="block text-gray-700 text-sm font-bold mb-2">Mật khẩu mới:</label>
-        <input id="newPassword" type="password" name="newPassword" placeholder="Mật khẩu mới" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
-    </div>
-    <div class="mb-4">
-        <label for="confirmNewPassword" class="block text-gray-700 text-sm font-bold mb-2">Xác nhận mật khẩu mới:</label>
-        <input id="confirmNewPassword" type="password" name="confirmNewPassword" placeholder="Xác nhận mật khẩu mới" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
-    </div>
-    <div class="mb-4" hidden="hidden">
-        <label for="maGV" class="block text-gray-700 text-sm font-bold mb-2">Xác nhận mật khẩu mới:</label>
-        <input id="maGV" type="hidden" name="maGV" th:attr="data-maGV=${giangVienlog.getMaGV()}" required>
-    </div>
-    <button id="saveButton" onclick="changePassword()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Đổi mật khẩu</button>
-    <button type="button" onclick="closeForm()" class="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none">
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-    </button>
-</form>
+<div id="changePasswordForm" class="w-full md:w-1/2 lg:w-1/3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute bg-white shadow-lg rounded-lg p-6" style="display: none;">
+    <form>
+        <div class="mb-4">
+            <label for="newPassword" class="block text-gray-700 text-sm font-bold mb-2">Mật khẩu mới:</label>
+            <input id="newPassword" type="password" name="newPassword" placeholder="Mật khẩu mới" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4">
+            <label for="confirmNewPassword" class="block text-gray-700 text-sm font-bold mb-2">Xác nhận mật khẩu mới:</label>
+            <input id="confirmNewPassword" type="password" name="confirmNewPassword" placeholder="Xác nhận mật khẩu mới" class="block w-full px-3 py-2 border rounded-md focus:outline-none focus:shadow-outline" required>
+        </div>
+        <div class="mb-4" hidden="hidden">
+            <label for="maGV" class="block text-gray-700 text-sm font-bold mb-2">Xác nhận mật khẩu mới:</label>
+            <input id="maGV" type="hidden" name="maGV" th:attr="data-maGV=${giangVienlog.getMaGV()}" required>
+        </div>
+        <button id="saveButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Đổi mật khẩu</button>
+        <button type="button" onclick="closeForm()" class="absolute top-0 right-0 mt-4 mr-4 text-gray-600 hover:text-gray-800 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </form>
+</div>
 
 
 <script>
+
+    var ele = document.getElementById("maGV");
+    var maGV = ele.getAttribute("data-maGV");
+
     function closeForm() {
         var close = document.getElementById("changePasswordForm");
         close.style.display = "none";
@@ -188,38 +193,52 @@
             resetpassword.style.display = "none";
         }
     }
-    function changePassword() {
-        var newPassword = document.getElementById('newPassword').value;
-        var confirmNewPassword = document.getElementById('confirmNewPassword').value;
-        var maGV = document.getElementById('maGV').getAttribute('data-maGV');
 
-        if (newPassword !== confirmNewPassword) {
+
+    function changePassword() {
+        toggleAddForm();
+    }
+
+    $("#saveButton").click(function (e) {
+        e.preventDefault()
+        var newpass = document.getElementById("newPassword").value;
+        var confirmpass = document.getElementById("confirmNewPassword").value;
+
+        console.log(newpass);
+
+        if (newpass !== confirmpass) {
             alert("Mật khẩu mới không khớp. Vui lòng nhập lại!");
             document.getElementById("newPassword").value = "";
             document.getElementById("confirmNewPassword").value = "";
             document.getElementById("newPassword").focus();
         } else {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/resetpasswordgv/' + maGV, false); // Đặt URL của máy chủ và phương thức HTTP ở đây
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        alert("Mật khẩu đã được thay đổi thành công!");
-                        // window.location.reload();
+            var giangVien = {
+                "maGV": maGV,
+                "newPassword": confirmpass
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/resetpasswordgv/" + maGV,
+                data: JSON.stringify(giangVien),
+                success: function (result) {
+                    console.log(result);
+                    if (result === "success") {
+                        alert("Cập nhật thành công !");
+                        window.location.reload();
                     } else {
-                        alert("Đã xảy ra lỗi khi thay đổi mật khẩu!");
-                        // window.location.reload();
+                        alert("Đã có lỗi xảy ra 2!");
+                        window.location.reload();
                     }
+                },
+                error: function () {
+                    alert("Đã có lỗi xảy ra 3!");
+                    window.location.reload();
                 }
-            };
-            var data = {
-                newPassword: newPassword,
-                maGV: maGV
-            };
-            xhr.send(JSON.stringify(data));
+            });
         }
-    }
+    })
 
 </script>
 
